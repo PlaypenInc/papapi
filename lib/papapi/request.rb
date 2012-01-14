@@ -1,53 +1,63 @@
 module Papapi
   class Request
 
-    class << self
+    attr_accessor :connection,
+                  :class_name,
+                  :method_name,
+                  :arguments,
+                  :skip_session
 
-      # Post a new request to the PAP Api.
-      def post (connection, class_name, method_name, attributes = {})
-        # pp JSON.parse(post_vars(connection, class_name, method_name, attributes)[:D])
-        
-        Response.new Net::HTTP.post_form(
-          connection.uri,
-          post_vars(connection, class_name, method_name, attributes)
-        )
+    def initialize (opt = {})
+      opt.each do |attr, value|
+        send "#{attr}=", value
       end
+    end
 
-      # Return post vars for request. Sets D as a json encoded
-      # string of all our attributes.
-      def post_vars (connection, class_name, method_name, attributes)
-        vars = {
-          "C" => "Gpf_Rpc_Server",
-          "M" => "run",
-          "requests" => [{
-            "C"         => class_name,
-            "M"         => method_name,
-            "isFromApi" => "Y",
-            "fields"    => post_fields(connection, attributes)
-          }]
-        }
+    def response
+      @response ||= Response.new connection.post(post_vars)
+    end
 
-        vars['S'] = connection.session.id if connection.session
-        
-        {:D => vars.to_json}
-      end
+    # Return post vars for request. Sets D as a json encoded
+    # string of all our attributes.
+    def post_vars
+      vars = {
+        "C" => "Gpf_Rpc_Server",
+        "M" => "run",
+        "requests" => [{
+          "C"         => class_name,
+          "M"         => method_name,
+          "isFromApi" => "Y",
+          "fields"    => arguments
+        }]
+      }
 
-      # Take all of our attributes and make an array out of them
-      # plus add fields required by PAP Api.  Also add the session
-      # id if a session exists.
-      def post_fields (connection, attributes)
-        fields = [
-          ["name", "value", "values", "error"],
-        ]
+      vars['S'] = connection.session_id unless skip_session?
       
-        attributes.each do |key, value|
-          fields << [key, value, nil, ""]
-        end
+      {:D => vars.to_json}
+    end
 
-        fields
-      end
+    def skip_session?
+      !!skip_session
+    end
 
-    end 
+    # class << self
+    # 
+    #   # Take all of our attributes and make an array out of them
+    #   # plus add fields required by PAP Api.  Also add the session
+    #   # id if a session exists.
+    #   def post_fields (connection, attributes)
+    #     fields = [
+    #       ["name", "value", "values", "error"],
+    #     ]
+    #   
+    #     attributes.each do |key, value|
+    #       fields << [key, value, nil, ""]
+    #     end
+    # 
+    #     fields
+    #   end
+    # 
+    # end 
 
   end
 end

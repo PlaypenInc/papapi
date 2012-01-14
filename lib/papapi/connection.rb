@@ -1,45 +1,33 @@
 module Papapi
   class Connection    
 
-    attr_reader :session, :uri
+    attr_reader :user,
+                :pass
 
     def initialize (uri, user, pass)
-      @uri = URI.parse(uri)
-      start_session(user, pass)
-      
-      yield self if block_given?
+      @uri  = URI.parse(uri)
+      @user = user
+      @pass = pass
     end
 
-    def post (clazz, method, attributes = {})
-      Request.post(self, clazz, method, attributes)
+    def post (vars)
+      Net::HTTP.post_form(@uri, vars)
     end
 
-    def create_affiliate (data)
-      post(
-        'Pap_Signup_AffiliateForm',
-        'add',
-        'username'       => data[:username],
-        'rpassword'      => data[:password],
-        'firstname'      => data[:firstname],
-        'lastname'       => data[:lastname],
-        'parentuserid'   => data[:parentuserid],
-        'data1'          => data[:url],
-        'data2'          => data[:company],
-        'data3'          => data[:street],
-        'data4'          => data[:city],
-        'data5'          => data[:state],
-        'data6'          => data[:country],
-        'data7'          => data[:zip],
-        'data8'          => data[:phone],
-        'refid'          => data[:refid],
-        'agreeWithTerms' => 'Y'
-      )
+    def session
+      @session ||= Session.new(self)
     end
 
-  private
-  
-    def start_session(user, pass)
-      @session = Session.new(self, user, pass)
+    def session_id
+      session.id
+    end
+
+    def request (opt)
+      Request.new opt.merge({:connection => self})
+    end
+
+    def post_request (opt)
+      PostRequest.new opt.merge({:connection => self})
     end
 
   end
