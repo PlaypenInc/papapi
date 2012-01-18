@@ -39,3 +39,13 @@ Affiliates
       commission_group_id,
       :note => 'added by ...'
     )
+    
+Transactions
+------------
+
+    Papapi::Transaction.create!(
+      :userid     => '78392178',
+      :campaignid => '93847461',
+      :commtypeid => '10938476',
+      :totalcost  => 1000             # in dollars
+    )

@@ -40,24 +40,5 @@ module Papapi
       !!skip_session
     end
 
-    # class << self
-    # 
-    #   # Take all of our attributes and make an array out of them
-    #   # plus add fields required by PAP Api.  Also add the session
-    #   # id if a session exists.
-    #   def post_fields (connection, attributes)
-    #     fields = [
-    #       ["name", "value", "values", "error"],
-    #     ]
-    #   
-    #     attributes.each do |key, value|
-    #       fields << [key, value, nil, ""]
-    #     end
-    # 
-    #     fields
-    #   end
-    # 
-    # end 
-
   end
 end
