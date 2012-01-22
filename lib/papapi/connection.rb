@@ -22,13 +22,5 @@ module Papapi
       session.id
     end
 
-    def request (opt)
-      Request.new opt.merge({:connection => self})
-    end
-
-    def post_request (opt)
-      PostRequest.new opt.merge({:connection => self})
-    end
-
   end
 end

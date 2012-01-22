@@ -1,5 +1,5 @@
 module Papapi
-  class PostRequest < Request
+  class FormRequest < Request
 
     # Different kind of request requires arguments to
     # be passed differently.
@@ -12,7 +12,11 @@ module Papapi
         fields << [key, value, nil, ""]
       end
   
-      fields
+      {:fields => fields}
+    end
+
+    def response
+      @response ||= FormResponse.new connection.post(post_vars)
     end
   
   end

@@ -1,5 +1,7 @@
 module Papapi
-  class Affiliate < Hashie::Trash
+  class Affiliate < Model
+    set_pap_class 'Pap_Signup_Affiliate'
+
     property :username
     property :firstname
     property :lastname
@@ -15,25 +17,6 @@ module Papapi
     property :data6,      :from => :country
     property :data7,      :from => :zip
     property :data8,      :from => :phone
-
-    def save!
-      update_properties(
-        PostRequest.new(
-          :connection  => Papapi.connection,
-          :class_name  => 'Pap_Signup_AffiliateForm',
-          :method_name => 'add',
-          :arguments   => to_hash
-        ).response.fields
-      )
-      true
-    end
-
-    # update properties ignoring those that don't exist
-    def update_properties (new_props)
-      new_props.each do |key,value|
-        send("#{key}=", value) if respond_to?("#{key}=")
-      end
-    end
 
     def add_to_commission_group (campaing_id, commission_group_id, opt = {})
       raise 'Affiliate has no userid, make sure it is set first' if userid.nil?
@@ -57,12 +40,22 @@ module Papapi
       ).response
     end
 
-    class << self
-      def create! (params)
-        a = new(params)
-        a.save!
-        a
-      end
+    def total_unpaid_transactions
+      raise 'Affiliate has no userid, make sure it is set first' if userid.nil?
+
+      response = Papapi::GridRequest.new(
+        :class_name => 'Pap_Merchants_Transaction_TransactionsGrid',
+        :method_name=> 'getRows',
+        :arguments  => {
+          :filters => [
+            ['payoutstatue', 'E', 'U'],
+            ['userid', 'E', userid]
+          ]
+        }
+      ).response
+      
+      response.map{|r| r['totalcost'].to_i}.inject{|sum,x| sum + x }
     end
+
   end
 end

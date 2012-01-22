@@ -6,7 +6,7 @@ module Papapi
     end
 
     def request
-      @request ||= PostRequest.new(
+      @request ||= FormRequest.new(
         :skip_session => true,
         :connection   => @connection,
         :class_name   => 'Gpf_Api_AuthService',

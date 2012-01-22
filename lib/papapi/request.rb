@@ -1,8 +1,9 @@
 module Papapi
   class Request
 
-    attr_accessor :connection,
-                  :class_name,
+    attr_writer   :connection
+
+    attr_accessor :class_name,
                   :method_name,
                   :arguments,
                   :skip_session
@@ -11,6 +12,11 @@ module Papapi
       opt.each do |attr, value|
         send "#{attr}=", value
       end
+
+    end
+
+    def connection
+      @connection ||= Papapi.connection
     end
 
     def response
@@ -27,8 +33,7 @@ module Papapi
           "C"         => class_name,
           "M"         => method_name,
           "isFromApi" => "Y",
-          "fields"    => arguments
-        }]
+        }.merge(arguments)]
       }
 
       vars['S'] = connection.session_id unless skip_session?

@@ -2,14 +2,23 @@ require 'net/http'
 require 'uri'
 require 'json'
 require 'hashie'
+
 require 'papapi/version'
+
 require 'papapi/connection'
-require 'papapi/transaction'
 require 'papapi/session'
-require 'papapi/request'
-require 'papapi/post_request'
-require 'papapi/response'
+
+require 'papapi/model'
 require 'papapi/affiliate'
+require 'papapi/transaction'
+
+require 'papapi/request'
+require 'papapi/form_request'
+require 'papapi/grid_request'
+
+require 'papapi/response'
+require 'papapi/form_response'
+require 'papapi/grid_response'
 
 module Papapi
 
