@@ -26,7 +26,7 @@ module Papapi
       opt[:status] ||= 'A'
       opt[:note]   ||= ''
       
-      PostRequest.new(
+      FormRequest.new(
         :connection  => Papapi.connection,
         :class_name  => 'Pap_Features_Common_AffiliateGroupForm',
         :method_name => 'add',
