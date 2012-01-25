@@ -8,6 +8,7 @@ module Papapi
     property :parentuserid
     property :refid
     property :userid
+    property :payoutoptionid
     property :rpassword,  :from => :password
     property :data1,      :from => :url
     property :data2,      :from => :company
