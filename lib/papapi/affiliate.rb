@@ -55,7 +55,7 @@ module Papapi
         }
       ).response
       
-      response.map{|r| r['commission'].to_i}.inject{|sum,x| sum + x }
+      response.map{|r| r['commission'].to_f}.inject{|sum,x| sum + x }
     end
 
   end
