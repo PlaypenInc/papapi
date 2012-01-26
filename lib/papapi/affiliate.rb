@@ -49,8 +49,8 @@ module Papapi
         :method_name=> 'getRows',
         :arguments  => {
           :filters => [
-            ['payoutstatue', 'E', 'U'],
-            ['userid', 'E', userid]
+            ['payoutstatus', 'E', 'U'],
+            ['userid',       'E', userid]
           ]
         }
       ).response
