@@ -8,8 +8,10 @@ module Papapi
     property :totalcost
     property :dateapproved
     property :dateinserted
-    property :rstatus,      :from => :status, :default => 'A'   # Approved
-    property :rtype,        :from => :type,   :default => 'S'   # Sale
+    property :orderid
+    property :productid
+    property :rstatus,      :from => :status, :default => 'P'   # (A)pproved (P)ending
+    property :rtype,        :from => :type,   :default => 'S'   # (S)ale
     property :multiTier,    :default => 'Y'   # Yes
   end
 end
