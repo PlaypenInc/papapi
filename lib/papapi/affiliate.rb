@@ -2,6 +2,7 @@ module Papapi
   class Affiliate < Model
     set_pap_class 'Pap_Signup_Affiliate'
 
+    property :Id
     property :username
     property :firstname
     property :lastname
