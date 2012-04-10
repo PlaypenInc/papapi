@@ -10,6 +10,7 @@ require 'papapi/session'
 
 require 'papapi/model'
 require 'papapi/affiliate'
+require 'papapi/payment_option'
 require 'papapi/transaction'
 
 require 'papapi/request'
