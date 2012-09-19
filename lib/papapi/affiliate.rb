@@ -22,11 +22,11 @@ module Papapi
 
     def add_to_commission_group (campaing_id, commission_group_id, opt = {})
       raise 'Affiliate has no userid, make sure it is set first' if userid.nil?
-      
+
       # Default options
       opt[:status] ||= 'A'
       opt[:note]   ||= ''
-      
+
       FormRequest.new(
         :connection  => Papapi.connection,
         :class_name  => 'Pap_Features_Common_AffiliateGroupForm',
@@ -55,9 +55,28 @@ module Papapi
           ]
         }
       ).response
-      
+
       response.map{|r| r['commission'].to_f}.inject{|sum,x| sum + x }
     end
 
+    def get_affiliates(offset, limit = 30, opt = {})
+
+      # Default options
+      opt[:rstatus] ||= 'A'
+
+      response = Papapi::GridRequest.new(
+        :class_name => 'Pap_Merchants_User_AffiliatesGrid',
+        :method_name=> 'getRows',
+        :arguments  => {
+          :offset => offset,
+          :limit  => limit,
+          :filters => [
+            ['rstatus', 'E', opt[:rstatus]]
+          ]
+        }
+      ).response
+    end
+
   end
+
 end
