@@ -4,7 +4,7 @@ Post Affiliate Pro API Ruby Client
 Configuration
 -------------
 
-    Papapi.configure do |config|
+    Papapi.config do |config|
       config.uri  = 'http://example.com/scripts/server.php'
       config.user = 'merchant@example.com'
       config.pass = 'password'
